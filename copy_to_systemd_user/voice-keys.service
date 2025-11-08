@@ -1,0 +1,11 @@
+[Unit]
+Description=Key Listener for Voice (toggle + triple-shutdown)
+After=graphical-session.target sound.target
+
+[Service]
+ExecStart=%h/venvs/ai/bin/python %h/app/key_listener.py
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=default.target

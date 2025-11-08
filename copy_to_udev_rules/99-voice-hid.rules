@@ -1,0 +1,6 @@
+SUBSYSTEM=="input",
+KERNEL=="event*",
+ENV{ID_INPUT_KEYBOARD}=="1",
+ATTRS{name}=="*ELECOM*|*MOSART*|*HUION*|*XPPen*",
+MODE="0660", GROUP="plugdev", SYMLINK+="input/voice-kbd"
+
