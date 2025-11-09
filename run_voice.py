@@ -17,6 +17,9 @@ OJTALK_VOICE = CONF["ojtalk_voice"]
 RATE = int(CONF["record_rate"])
 SIL_STOP= float(CONF["silence_stop_sec"])
 TMP_WAV = CONF["tmp_wav"]
+REPLY_MAX_SENT = int(CONF.get("reply_max_sentences", 3))
+REPLY_MAX_TOKENS = int(CONF.get("reply_max tokens", 180))
+SYSTEM_PROMPT = CONF.get("system_prompt", "").strip()
 
 #===状態
 listening = False
@@ -27,8 +30,18 @@ lock = threading.Lock()
 asr = WhisperModel(ASR_DIR, device="cpu", compute_type="int8")
 llm = Llama(model_path=LLM_PATH, n_ctx=8192,n_threads=max(4, multiprocessing.cpu_count()-1))
 
+def style_hint_for_lang(lang: str, n: int) -> str:
+    if lang.lower().startswith("bg"):
+            return f"Отговаряй възможно най-накратко - до {n} изречения."
+    if lang.lower().startswith("ja"):
+            return f"回答はできるだけ簡潔に、最大{n}文以内にまとめてください。"
+    return f"Answer as concisely as possible in at most {n} sentences."
+
 def gemma_prompt(user_text: str) -> str:
-    return "<bos><start_of_turn>user\n" + user_text + "\n<end_of_turn>\n<start_of_turn>model\n"
+    s = "<bos>"
+    s += "<start_of_turn>user\n" + SYSTEM_PROMPT + style_hint_for_lang(LANG, REPLY_MAX_SENT) + "\n<end_of_turn>\n<start_of_turn>model\nOK.<end_of_turn>\n"
+    s += "<start_of_turn>user\n" + user_text + "\n<end_of_turn>\n<start_of_turn>model\n"
+    return s
 
 def speak(text: str):
     if TTS_MODE == "mms-bg":
@@ -126,8 +139,8 @@ while True:
                 if text:
                     out = llm(
                         gemma_prompt(text),
-                        max_tokens=400, temperature=0.1, top_k=25, top_p=1.0,
-                        repeat_penalty=1.1, stop=["<cos>","<end_of_turn>"]
+                        max_tokens=REPLY_MAX_TOKENS, temperature=0.1, top_k=25, top_p=1.0,
+                        repeat_penalty=1.1, stop=["<eos>","<end_of_turn>"]
                     )
                     reply = out["choices"][0]["text"].strip()
                     print("[LLM]", reply)

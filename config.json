@@ -8,5 +8,8 @@
 "ojtalk_voice": "/usr/share/hts-voice/mei/mei_normal.htsvoice",
 "record_rate": 16000,
 "silence_stop_sec": 1.0,
+"system_prompt": "",
+"reply_max_sentences": 3,
+"reply_max_tokens": 180,
 "tmp_wav":"/tmp/voice_in.wav"
 }
