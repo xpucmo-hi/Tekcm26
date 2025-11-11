@@ -11,5 +11,12 @@
 "system_prompt": "",
 "reply_max_sentences": 3,
 "reply_max_tokens": 180,
+"normalize numbers": true,
+"topics": {
+ "bg": [
+ "Хайде да обсъдим любимите ти места за пътуване.",
+ "Разкажи ми за храната, която най-много обичаш."
+ ]
+},
 "tmp_wav":"/tmp/voice_in.wav"
 }

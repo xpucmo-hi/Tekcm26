@@ -47,7 +47,7 @@ huggingface-cli download INSAIT-Institute/BgGPT-Gemma-2-9B-IT-v1.0-GGUF --includ
 huggingface-cli download INSAIT-Institute/BgGPT-Gemma-2-27B-IT-v1.0-GGUF --include "BgGPT-Gemma-2-27B-IT-v1.0.Q4_K_S.gguf" --local-dir /opt/models/bggpt/27b --local-dir-use-symlinks False
 ```
 
-### 音声モデルダウンロード
+### 音声モデルインストール
 ```
 sudo mkdir -p /opt/models/{whisper,mms-tss/facebook}
 sudo chown -R $USER /opt/models
@@ -57,4 +57,11 @@ huggingface-cli download Systran/faster-whisper-large-v3 --local-dir /opt/models
 ### その他のソフト
 ```
 sudo apt install -y emacs-nox build-essential cmake ninja-build pkg-config wget jq ripgrep fzf tmux pipewire-audio wireplumber pavucontrol qpwgraph alsa-utils sox
+```
+
+### キー入力受付の設定
+```
+sudo groupadd -f plugdev
+sudo usermod -aG plugdev $USER
+sudo udevadm control --reload && sudo udevadm trigger
 ```
