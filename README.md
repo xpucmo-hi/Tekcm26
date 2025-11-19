@@ -65,3 +65,12 @@ sudo groupadd -f plugdev
 sudo usermod -aG plugdev $USER
 sudo udevadm control --reload && sudo udevadm trigger
 ```
+
+### 自動起動の設定
+```
+systemctl --user daemon-reload
+systemctl --user restart voice.service
+systemctl --user restart voice-keys.service
+```
+
+

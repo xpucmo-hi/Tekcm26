@@ -9,7 +9,7 @@ Environment="PATH=%h/venvs/ai/bin:/usr/bin"
 #オフライン動作の環境変数(ここに書けば常に有効)
 Environment=HF_HUB_OFFLINE=1
 Environment=TRANSFORMERS_OFFLINE=1
-ExecStart=%h/venvs/ai/bin/python run_voice.py
+ExecStart=%h/venvs/ai/bin/python %h/app/run_voice.py
 
 Restart=on-failure
 RestartSec=2
